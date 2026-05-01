@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fruit Fusion - Juices</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ===== GLOBAL STYLES ===== */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* ===== HEADER & LOGO ===== */
+        .header-container {
+            background: radial-gradient(circle, #ffb347 0%, #ffcc33 100%);
+        }
+
+        .header-logo {
+            height: 90px;
+            transition: height 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .header-logo {
+                height: 90px;
+            }
+        }
+
+        .search-box {
+            max-width: 600px;
+        }
+
+        footer {
+            background-color: #4a7a3a;
+        }
+
+        /* Social Buttons Hover */
+        .btn-primary:hover {
+            background-color: #0a58ca !important;
+            transform: scale(1.1);
+        }
+
+        .btn-danger:hover {
+            background-color: #b02a37 !important;
+            transform: scale(1.1);
+        }
+
+        .btn-success:hover {
+            background-color: #146c43 !important;
+            transform: scale(1.1);
+        }
+
+        /* Footer Links Hover */
+        footer a.text-white-50:hover {
+            color: #fff !important;
+            padding-left: 6px;
+            transition: all 0.2s ease;
+        }
+
+        /* Social Button Transition */
+        footer .btn {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* ===== SIDEBAR (OFFCANVAS) ===== */
+        .offcanvas-header {
+            background: #ff8c00;
+            color: white;
+        }
+
+        .user-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            color: #333 !important;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: #f2f2f2;
+            padding-left: 30px;
+            border-left: 4px solid #ff8c00;
+        }
+
+        .nav-link.active {
+            background: #eaeaea;
+            font-weight: bold;
+            border-left: 4px solid #ff8c00;
+        }
+
+        .hover-video {
+            transition: opacity 0.4s ease-in-out;
+            background-color: #f8f9fa;
+            /* Prevents a flicker during reload */
+        }
+
+        .hover-video:hover {
+            opacity: 0.9;
+            /* Slight visual change to show it's active */
+        }
+     /* ── NOTIFICATION OFFCANVAS ── */
+    #notifCanvas {
+      width: 380px;
+    }
+    #notifCanvas .offcanvas-header {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 18px 20px;
+    }
+    #notifCanvas .offcanvas-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .notif-mark-all {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .notif-mark-all:hover { color: #fff; }
+
+   
+    /* notification list */
+    .notif-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .notif-item:hover { background: var(--green-light); }
+    .notif-item.unread { background: #f0f8ec; }
+    .notif-item.unread:hover { background: #e2f5d8; }
+
+   
+
+    /* icon bubble */
+    .notif-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .icon-order   { background: #fff4d6; }
+    .icon-promo   { background: #fde8e8; }
+    .icon-delivery{ background: var(--green-light); }
+    .icon-wallet  { background: #e8f0fe; }
+    .icon-system  { background: #f3f3f3; }
+
+    .notif-title {
+      font-size: 13px; font-weight: 700; margin-bottom: 2px;
+    }
+    .notif-body {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .notif-time {
+      font-size: 10px; color: #b0b0a0;
+      margin-top: 5px; display: block;
+    }
+
+    :root {
+      --green-dark:  #2d6a1f;
+      --green-mid:   #4a8f34;
+      --green-light: #edf5e7;
+      --orange:      #ff8c00;
+      --bg:          #f5f4ee;
+      --border:      #e0e0d4;
+      --muted:       #6a7060;
+      --text:        #1a1a18;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- HEADER -->
+  <header class="header-container py-2 shadow-sm">
+        <div class="container">
+
+            <!-- Top Row -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+                <!-- Menu Button -->
+                <button class="btn border-0 p-0">
+                    <i class="fas fa-bars fs-4"></i>
+                </button>
+
+                <!-- Logo (center on mobile) -->
+                <a href="index.html" class="mx-auto mx-md-0">
+                    <img src="image/image.png" class="img-fluid" style="max-height: 95px;" alt="Fruit Fusion">
+                </a>
+
+                <!-- Icons -->
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Cart -->
+                    <div class="position-relative">
+                        <a href="cart.html" class="text-dark">
+                            <i class="fa fa-shopping-cart fs-4"></i>
+                        </a>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: 0.6rem;">
+                            2
+                        </span>
+                    </div>
+
+                    <!-- Bell -->
+                    <div class="position-relative" style="margin-right:3px;">
+                        <i class="fas fa-bell fs-4 text-dark" role="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#notifCanvas" style="cursor: pointer;">
+                        </i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: .6rem;">
+                            3
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="mt-3">
+                <div class="input-group shadow-sm mx-auto" style="max-width: 600px;">
+                    <input type="text" class="form-control border-0" placeholder="Search for frames, lenses...">
+                    <button class="btn btn-dark px-3 px-md-4">Search</button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+   <!-- ══════════════════════════════════════
+       NOTIFICATION OFFCANVAS (RIGHT SIDE)
+  ══════════════════════════════════════ -->
+  <div class="offcanvas offcanvas-end d-flex flex-column" id="notifCanvas" tabindex="-1">
+
+    <!-- Header -->
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">
+        <i class="fas fa-bell me-2"></i> Notifications
+        <span class="badge rounded-pill ms-2" style="background:rgba(255,255,255,.2);font-size:11px;">3 New</span>
+      </h5>
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="notif-mark-all">Mark all read</a>
+        <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+    </div>
+    <!-- Notification List -->
+    <div class="notif-list">
+
+      <!-- UNREAD: Order -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-order">🛍️</div>
+        <div>
+          <div class="notif-title">Order Confirmed!</div>
+          <div class="notif-body">Your order #FF20483 for Cold Pressed Juice Pack has been confirmed and is being prepared.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>2 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Delivery -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-delivery">🚚</div>
+        <div>
+          <div class="notif-title">Out for Delivery</div>
+          <div class="notif-body">Your order #FF20479 is on the way! Expected delivery in 25–35 minutes.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>18 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Promo -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-promo">🎁</div>
+        <div>
+          <div class="notif-title">Weekend Special 🎉</div>
+          <div class="notif-body">Get 20% OFF on all Detox Juices this weekend only. Use code <strong>DETOX20</strong>.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>1 hour ago</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+   <!-- ══════════════════════ SIDEBAR OFFCANVAS ══════════════════════ -->
+  <div class="offcanvas offcanvas-start w-75" style="max-width: 260px;" id="sidebar" tabindex="-1"
+        aria-labelledby="sidebarLabel">
+
+        <div class="offcanvas-header text-white" style="background-color: ffc23b;">
+            <div class="d-flex align-items-center gap-3">
+                <div class="position-relative fs-5">
+                    <i class="fa-solid fa-user" role="button"></i>
+                </div>
+                <h5 class="mb-0" id="sidebarLabel">Himanshu </h5>
+            </div>
+            <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body p-0 d-flex flex-column">
+
+            <ul class="nav flex-column mt-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-store me-3"></i>Super Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="checkout.html"><i class="fas fa-list me-3"></i>My Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="checkout.html"><i class="fas fa-wallet me-3"></i>Payment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="order.html"><i class="fas fa-truck me-3"></i>Shipping</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Referral.html"><i class="fas fa-gift me-3"></i>Referral</a>
+                </li>
+            </ul>
+
+            <div class="mt-auto p-4 border-top">
+                <a href="Login.html" class="text-danger fw-bold text-decoration-none fs-5">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container-fluid my-5">
+        <h2 class="text-center mb-4 fw-bold">Our Juices</h2>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Card 1 -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="video-box ratio ratio-1x1">
+                        <a href="shopping.html">
+                            <video muted loop playsinline class="w-100 h-100 object-fit-cover hover-video"
+                                poster="https://i.pinimg.com/736x/f9/2a/d6/f92ad62791ff6ecc128838292061fe8c.jpg">
+                                <!-- Put your video source here -->
+                                <source
+                                    src="https://media.istockphoto.com/id/2162893102/video/glasses-with-fresh-organic-vegetable-and-fruit-juices-detox-diet.mp4?s=mp4-640x640-is&k=20&c=vfpo1Wy-mJw_yjw2FXXZ-EaQSQgtE3wjh9WY7yzDjFc="
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-0">Fresh Juices</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="video-box ratio ratio-1x1">
+                        <a href="shopping1.html">
+                            <video muted loop playsinline class="w-100 h-100 object-fit-cover hover-video"
+                                poster="https://i.pinimg.com/736x/c6/21/11/c6211182462248fb4fc30faa146b6429.jpg">
+                                <!-- Put your video source here -->
+                                <source
+                                    src="https://media.istockphoto.com/id/2066454362/video/orange-falling-breaking-in-slices-slow-motion.mp4?s=mp4-640x640-is&k=20&c=VCuBK9P0YnvF4mImzJkjLlRvi52L0VVPPW_NbY7ZC_w="
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-0"> 🍊 Citrus Juices</h6>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Card 3 -->
+
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="video-box ratio ratio-1x1">
+                        <a href="shopping2.html">
+                            <video muted loop playsinline class="w-100 h-100 object-fit-cover hover-video"
+                                poster="https://i.pinimg.com/736x/bd/76/4c/bd764c2409823e23742e9bd364bc9ca5.jpg">
+                                <!-- Put your video source here -->
+                                <source src="https://www.pexels.com/download/video/5944933/" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-0">🍎 Fruit Juices</h6>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Card 4 -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="video-box ratio ratio-1x1">
+                        <a href="shopping3.html">
+                            <video muted loop playsinline class="w-100 h-100 object-fit-cover hover-video"
+                                poster="https://i.pinimg.com/736x/a3/17/7d/a3177d502c9e2607c0b2eed2c9325b7a.jpg">
+                                <!-- Put your video source here -->
+                                <source src="https://www.pexels.com/download/video/6664157/" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-0">🥕 Healthy & Detox Juices</h6>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Card 5 -->
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="video-box ratio ratio-1x1">
+                        <a href="shopping.html">
+                            <video muted loop playsinline class="w-100 h-100 object-fit-cover hover-video"
+                                poster="https://i.pinimg.com/736x/35/f7/52/35f75210b4628d465fcf9db2447b02bf.jpg">
+                                <!-- Put your video source here -->
+                                <source
+                                    src="https://media.istockphoto.com/id/2137897851/video/exotic-fresh-colorful-contrasting-tropical-fruit-salad-segments-in-pitaya-shells.mp4?s=mp4-640x640-is&k=20&c=wAp3uWMBJ4oWp2z4levkI8Dh6IlbauolXwhydw6XPWU="
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-0"> 🥭 Tropical Juices</h6>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <footer class="text-white pt-5 pb-0">
+        <!-- Footer Main -->
+        <div class="container pb-4">
+            <div class="row g-4">
+
+                <!-- Logo + Social -->
+                <div class="col-12 col-md-3 text-center text-md-start">
+                    <img src="image/logo.png" alt="Fruit Fusion" class="img-fluid mb-3" style="max-width:170px; margin-left:-18px">
+                    <p class="text-uppercase fw-semibold small mb-2">Follow Us:</p>
+                    <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+                        <a href="#" class="btn btn-primary btn-sm rounded-circle" aria-label="Facebook"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm rounded-circle" aria-label="Instagram"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="btn btn-success btn-sm rounded-circle" aria-label="WhatsApp"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Shop</a></li>
+                        <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Energy
+                                Drinks</a></li>
+                        <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Fruit
+                                Fusion</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Sauces</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Juices</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Mayos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Everyone's Favourite -->
+                <div class="col-6 col-sm-6 col-md-3">
+                    <h6 class="text-uppercase fw-bold mb-3">Everyone's Favourite</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cheesy Sauce</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Baked Multigrain
+                                Flatbread</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Peri Peri Dip</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Chipotle Dip</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Tomato Ketchup</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Support</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Shipping &amp;
+                                Delivery</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cancellations
+                                &amp; Returns</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Privacy Policy</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Terms &amp;
+                                Conditions</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Contact Us</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">About Us</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <!-- Address -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Address</h6>
+                    <p class="text-white-50 small">
+                        No. 216-A, 2nd Floor, Enkay Tower, Wing-A,<br>
+                        Udyog Vihar, Phase V, Gurugram-122016,<br>
+                        Haryana, India.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Keyword Bar -->
+        <div class=" py-6">
+            <div class="container-fluid">
+                <p class=" small text-white text-center">
+                    <strong class="text-white">Shop By Keyword:</strong>
+                    Cold Pressed Oils | Baked Snacks | Green Tea |
+                    Herbs &amp; Spices | Durum Wheat Pasta | Cake Mix | Snacks
+                </p>
+            </div>
+        </div>
+
+        <!-- Copyright Bar -->
+        <div class=" py-3" style=" background-color: #1d3e12;">
+            <div class="container d-flex align-items-center justify-content-center flex-wrap gap-2">
+                <a href="#top" class="btn btn-outline-light btn-sm rounded-circle me-2"
+                    style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;"
+                    aria-label="Scroll to top">
+                    <i class="fas fa-chevron-up"></i>
+                </a>
+                <span class="text-white small">Copyright 2024 &copy; Fruit Fusion World. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hoverVideos = document.querySelectorAll('.hover-video');
+
+        hoverVideos.forEach(video => {
+            // When mouse enters: Play the video
+            video.addEventListener('mouseenter', () => {
+                video.play();
+            });
+
+            // When mouse leaves: Pause and Reset to Poster Image
+            video.addEventListener('mouseleave', () => {
+                video.pause();
+                video.load(); // This "reloads" the element and shows the poster again
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

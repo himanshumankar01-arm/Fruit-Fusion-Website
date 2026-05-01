@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Fruite Fusion | Welcome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ===== PAGE SETTINGS ===== */
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      /* Prevents scrollbars during animation */
+      background: radial-gradient(circle, #ffb347 0%, #ffcc33 100%);
+      font-family: 'Lato', sans-serif;
+    }
+
+    /* ===== CENTER CONTAINER ===== */
+    .splash-screen {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ===== LOGO ANIMATION ===== */
+    .logo-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .logo-animation {
+      max-width: 600px;
+      /* Reduced for better balance */
+      width: 85%;
+      height: auto;
+      opacity: 0;
+      animation: zoomFadeIn 1.8s ease-out forwards;
+    }
+
+    @keyframes zoomFadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+        filter: blur(5px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    /* Logo Hover Effect */
+    .logo-link:hover {
+      transform: scale(1.50);
+
+    }
+
+    .logo-link:hover .logo-animation {
+      filter: drop-shadow(10px 80px 20px rgba(0, 0, 0, 0.15));
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 576px) {
+      .logo-animation {
+        max-width: 300px;
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Splash Screen -->
+  <div class="container splash-screen">
+    <a href="login.html" class="logo-link" aria-label="Enter Fruite Fusion Website">
+      <!-- Ensure the path to your image is correct -->
+      <img src="image/logo.png" alt="Fruite Fusion Logo" class="img-fluid logo-animation">
+    </a>
+  </div>
+
+  <!-- Optional: Auto-redirect after 5 seconds -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

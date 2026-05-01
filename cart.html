@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fruit Fusion - Cart</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* GLOBAL RESETS (Variables & Media Queries Removed) */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f8f9fa;
+      color: #1a1a18;
+    }
+
+    /* HEADER & LOGO */
+    .header-container {
+      background: radial-gradient(circle, #ffb347 0%, #ffcc33 100%);
+      z-index: 1040;
+    }
+
+    .header-logo {
+      height: 90px;
+    }
+
+    .search-box {
+      max-width: 600px;
+    }
+
+    /* SIDEBAR (OFFCANVAS) */
+    .offcanvas-header {
+      background: #ff8c00;
+      color: white;
+    }
+
+    .nav-link-custom {
+      display: block;
+      font-size: 16px;
+      color: #333 !important;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link-custom:hover {
+      background: #f2f2f2;
+      padding-left: 30px;
+      border-left: 4px solid #ff8c00;
+    }
+
+    .nav-link-custom.active {
+      background: #eaeaea;
+      font-weight: bold;
+      border-left: 4px solid #ff8c00;
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0d4;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6a7060;
+    }
+
+    .step.active {
+      color: #2d6a1f;
+      font-weight: 600;
+    }
+
+    .step.done {
+      color: #2d6a1f;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #e0e0d4;
+      color: #6a7060;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step.active .step-num {
+      background: #2d6a1f;
+      color: #fff;
+    }
+
+    .step.done .step-num {
+      background: #edf5e7;
+      color: #2d6a1f;
+    }
+
+    .step-arrow {
+      color: #e0e0d4;
+      font-size: 14px;
+      margin: 0 4px;
+    }
+
+    /* CART ELEMENTS */
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: #2d6a1f;
+      border: 1.5px solid #2d6a1f;
+      border-radius: 50px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      background: #edf5e7;
+      color: #2d6a1f;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .cart-box {
+      background: #ffffff;
+      border: 1px solid #e0e0d4;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .cart-table-head {
+      background: #f8f9fa;
+      border-bottom: 1px solid #e0e0d4;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #6a7060;
+      padding: 12px 20px;
+    }
+
+    .cart-row {
+      border-bottom: 1px solid #e0e0d4;
+      padding: 16px 20px;
+    }
+
+    .cart-row:last-child {
+      border-bottom: none;
+    }
+
+    .cart-thumb-box {
+      width: 46px;
+      height: 58px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .item-sub {
+      font-size: 11px;
+      color: #6a7060;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .item-subtotal {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .qty-input {
+      width: 60px;
+      border: 1px solid #e0e0d4;
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    /* SUMMARY */
+    .summary-card {
+      background: #ffffff;
+      border: 1px solid #e0e0d4;
+      border-radius: 16px;
+      position: sticky;
+      top: 100px;
+      z-index: 10;
+    }
+
+    .summary-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 9px 0;
+      border-bottom: 1px solid #e0e0d4;
+    }
+
+    .summary-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .summary-row.total {
+      font-size: 16px;
+      font-weight: 700;
+      padding-top: 12px;
+      border-top: 2px solid #e0e0d4;
+    }
+
+    .summary-free {
+      color: #2d6a1f;
+      font-weight: 600;
+    }
+
+    .summary-discount {
+      color: #d94040;
+      font-weight: 600;
+    }
+
+    .btn-checkout {
+      display: block;
+      width: 100%;
+      background: #2d6a1f;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 18px;
+    }
+
+    .btn-checkout:hover {
+      background: #1d4814;
+      color: #fff;
+    }
+
+    .btn-continue {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: #2d6a1f;
+      border: 1.5px solid #2d6a1f;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 18px;
+    }
+
+    .btn-continue:hover {
+      background: #c6e1bc;
+      color: #146c43;
+    }
+
+    footer {
+      background-color: #4a7a3a;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background-color: #4a7a3a;
+    }
+
+    /* Social Buttons Hover */
+    .btn-primary:hover {
+      background-color: #0a58ca !important;
+      transform: scale(1.1);
+    }
+
+    .btn-danger:hover {
+      background-color: #b02a37 !important;
+      transform: scale(1.1);
+    }
+
+    .btn-success:hover {
+      background-color: #146c43 !important;
+      transform: scale(1.1);
+    }
+
+    /* Footer Links Hover */
+    footer a.text-white-50:hover {
+      color: #fff !important;
+      padding-left: 6px;
+      transition: all 0.2s ease;
+    }
+
+    /* Social Button Transition */
+    footer .btn {
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+   /* ── NOTIFICATION OFFCANVAS ── */
+    #notifCanvas {
+      width: 380px;
+    }
+    #notifCanvas .offcanvas-header {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 18px 20px;
+    }
+    #notifCanvas .offcanvas-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .notif-mark-all {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .notif-mark-all:hover { color: #fff; }
+
+   
+    /* notification list */
+    .notif-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .notif-item:hover { background: var(--green-light); }
+    .notif-item.unread { background: #f0f8ec; }
+    .notif-item.unread:hover { background: #e2f5d8; }
+
+   
+
+    /* icon bubble */
+    .notif-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .icon-order   { background: #fff4d6; }
+    .icon-promo   { background: #fde8e8; }
+    .icon-delivery{ background: var(--green-light); }
+    .icon-wallet  { background: #e8f0fe; }
+    .icon-system  { background: #f3f3f3; }
+
+    .notif-title {
+      font-size: 13px; font-weight: 700; margin-bottom: 2px;
+    }
+    .notif-body {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .notif-time {
+      font-size: 10px; color: #b0b0a0;
+      margin-top: 5px; display: block;
+    }
+
+    :root {
+      --green-dark:  #2d6a1f;
+      --green-mid:   #4a8f34;
+      --green-light: #edf5e7;
+      --orange:      #ff8c00;
+      --bg:          #f5f4ee;
+      --border:      #e0e0d4;
+      --muted:       #6a7060;
+      --text:        #1a1a18;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- HEADER -->
+  <header class="header-container py-2 shadow-sm">
+        <div class="container">
+
+            <!-- Top Row -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+                <!-- Menu Button -->
+                <button class="btn border-0 p-0">
+                    <i class="fas fa-bars fs-4"></i>
+                </button>
+
+                <!-- Logo (center on mobile) -->
+                <a href="index.html" class="mx-auto mx-md-0">
+                    <img src="image/image.png" class="img-fluid" style="max-height: 95px;" alt="Fruit Fusion">
+                </a>
+
+                <!-- Icons -->
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Cart -->
+                    <div class="position-relative">
+                        <a href="cart.html" class="text-dark">
+                            <i class="fa fa-shopping-cart fs-4"></i>
+                        </a>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: 0.6rem;">
+                            2
+                        </span>
+                    </div>
+
+                    <!-- Bell -->
+                    <div class="position-relative" style="margin-right:3px;">
+                        <i class="fas fa-bell fs-4 text-dark" role="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#notifCanvas" style="cursor: pointer;">
+                        </i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: .6rem;">
+                            3
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="mt-3">
+                <div class="input-group shadow-sm mx-auto" style="max-width: 600px;">
+                    <input type="text" class="form-control border-0" placeholder="Search for frames, lenses...">
+                    <button class="btn btn-dark px-3 px-md-4">Search</button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+   <!-- ══════════════════════════════════════
+       NOTIFICATION OFFCANVAS (RIGHT SIDE)
+  ══════════════════════════════════════ -->
+  <div class="offcanvas offcanvas-end d-flex flex-column" id="notifCanvas" tabindex="-1">
+
+    <!-- Header -->
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">
+        <i class="fas fa-bell me-2"></i> Notifications
+        <span class="badge rounded-pill ms-2" style="background:rgba(255,255,255,.2);font-size:11px;">3 New</span>
+      </h5>
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="notif-mark-all">Mark all read</a>
+        <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+    </div>
+    <!-- Notification List -->
+    <div class="notif-list">
+
+      <!-- UNREAD: Order -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-order">🛍️</div>
+        <div>
+          <div class="notif-title">Order Confirmed!</div>
+          <div class="notif-body">Your order #FF20483 for Cold Pressed Juice Pack has been confirmed and is being prepared.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>2 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Delivery -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-delivery">🚚</div>
+        <div>
+          <div class="notif-title">Out for Delivery</div>
+          <div class="notif-body">Your order #FF20479 is on the way! Expected delivery in 25–35 minutes.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>18 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Promo -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-promo">🎁</div>
+        <div>
+          <div class="notif-title">Weekend Special 🎉</div>
+          <div class="notif-body">Get 20% OFF on all Detox Juices this weekend only. Use code <strong>DETOX20</strong>.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>1 hour ago</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR OFFCANVAS -->
+  <div class="offcanvas offcanvas-start w-75" style="max-width: 260px;" id="sidebar" tabindex="-1">
+    <div class="offcanvas-header text-white" style="background-color: #ffc23b;">
+      <div class="d-flex align-items-center gap-3">
+        <div class="position-relative fs-5">
+          <i class="fa-solid fa-user" role="button"></i>
+        </div>
+        <h5 class="mb-0">Himanshu</h5>
+      </div>
+      <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0 d-flex flex-column">
+      <ul class="nav flex-column mt-2">
+        <li class="nav-item"><a class="nav-link-custom" href="home.html"><i class="fas fa-store me-3"></i>Super
+            Market</a></li>
+        <li class="nav-item"><a class="nav-link-custom " href="checkout.html"><i class="fas fa-list me-3"></i>My
+            Orders</a></li>
+        <li class="nav-item"><a class="nav-link-custom" href="checkout.html"><i
+              class="fas fa-wallet me-3"></i>Payment</a></li>
+        <li class="nav-item"><a class="nav-link-custom" href="order.html"><i class="fas fa-truck me-3"></i>Shipping</a>
+        </li>
+        <li class="nav-item"><a class="nav-link-custom" href="Referral.html"><i
+              class="fas fa-gift me-3"></i>Referral</a></li>
+      </ul>
+      <div class="mt-auto p-4 border-top">
+        <a href="Login.html" class="text-danger fw-bold text-decoration-none fs-5"><i
+            class="fas fa-sign-out-alt me-2"></i> Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-bar py-2">
+    <div class="container">
+      <div class="d-flex align-items-center flex-wrap gap-1">
+        <span class="step done"><span class="step-num">✓</span> Shop</span>
+        <span class="step-arrow">›</span>
+        <span class="step active"><span class="step-num">2</span> Cart</span>
+        <span class="step-arrow">›</span>
+        <span class="step"><span class="step-num">3</span> Checkout</span>
+        <span class="step-arrow">›</span>
+        <span class="step"><span class="step-num">4</span> Confirm</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CART SECTION -->
+  <div class="container py-4">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <a href="shopping.html" class="btn-back">← Shop</a>
+      <h2 class="page-title mb-0">Your Cart</h2>
+    </div>
+
+    <div class="row g-4">
+      <!-- LEFT: Items -->
+      <div class="col-lg-12">
+        <div class="cart-box mb-3">
+          <!-- Table Header (Bootstrap responsive visibility) -->
+          <div class="cart-table-head d-none d-md-block">
+            <div class="row px-3">
+              <div class="col-md-5">Product</div>
+              <div class="col-md-2">Price</div>
+              <div class="col-md-3">Quantity</div>
+              <div class="col-md-2 text-end">Subtotal</div>
+            </div>
+          </div>
+
+          <!-- Row 1 -->
+          <div class="cart-row">
+            <div class="row align-items-center g-3 px-md-3">
+              <div class="col-12 col-md-5 d-flex align-items-center gap-3">
+                <div class="cart-thumb-box" style="background:#b2c83218;border:1px solid #b2c83230">
+                  <img src="image/image9.png" alt="Product"
+                    style="width:80px;height:46px;border-radius:6px;object-fit:contain">
+                </div>
+                <div>
+                  <div class="item-name">Sugarcane Juice</div>
+                  <div class="item-sub">250ML · Pack of 6</div>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="d-md-none item-sub mb-1">Price</div>
+                <span class="item-price">₹360</span>
+              </div>
+              <div class="col-4 col-md-3">
+                <div class="d-md-none item-sub mb-1">Qty</div>
+                <input type="number" class="qty-input" value="1" min="1" max="10">
+              </div>
+              <div class="col-4 col-md-2 text-md-end">
+                <div class="d-md-none item-sub mb-1">Total</div>
+                <span class="item-subtotal">₹360</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="cart-row">
+            <div class="row align-items-center g-3 px-md-3">
+              <div class="col-12 col-md-5 d-flex align-items-center gap-3">
+                <div class="cart-thumb-box" style="background:#e8960d18;border:1px solid #e8960d30">
+                  <img src="image/image8.png" alt="Product"
+                    style="width:80px;height:46px;border-radius:6px;object-fit:contain">
+                </div>
+                <div>
+                  <div class="item-name">Cold Pressed Orange</div>
+                  <div class="item-sub">250ML · Pack of 6</div>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="d-md-none item-sub mb-1">Price</div>
+                <span class="item-price">₹420</span>
+              </div>
+              <div class="col-4 col-md-3">
+                <div class="d-md-none item-sub mb-1">Qty</div>
+                <input type="number" class="qty-input" value="1" min="1" max="10">
+              </div>
+              <div class="col-4 col-md-2 text-md-end">
+                <div class="d-md-none item-sub mb-1">Total</div>
+                <span class="item-subtotal">₹420</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="cart-row">
+            <div class="row align-items-center g-3 px-md-3">
+              <div class="col-12 col-md-5 d-flex align-items-center gap-3">
+                <div class="cart-thumb-box" style="background:#e8960d18;border:1px solid #e8960d30">
+                  <img src="image/gemini26.png" alt="Product"
+                    style="width:80px;height:46px;border-radius:6px;object-fit:contain">
+                </div>
+                <div>
+                  <div class="item-name">Choclate Milkshake</div>
+                  <div class="item-sub">250ML · Pack of 6</div>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="d-md-none item-sub mb-1">Price</div>
+                <span class="item-price">₹420</span>
+              </div>
+              <div class="col-4 col-md-3">
+                <div class="d-md-none item-sub mb-1">Qty</div>
+                <input type="number" class="qty-input" value="1" min="1" max="10">
+              </div>
+              <div class="col-4 col-md-2 text-md-end">
+                <div class="d-md-none item-sub mb-1">Total</div>
+                <span class="item-subtotal">₹400</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="cart-row">
+            <div class="row align-items-center g-3 px-md-3">
+              <div class="col-12 col-md-5 d-flex align-items-center gap-3">
+                <div class="cart-thumb-box" style="background:#e8960d18;border:1px solid #e8960d30">
+                  <img src="image/image27.png" alt="Product"
+                    style="width:80px;height:46px;border-radius:6px;object-fit:contain">
+                </div>
+                <div>
+                  <div class="item-name">Strawberry Milkshake</div>
+                  <div class="item-sub">250ML · Pack of 6</div>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="d-md-none item-sub mb-1">Price</div>
+                <span class="item-price">₹420</span>
+              </div>
+              <div class="col-4 col-md-3">
+                <div class="d-md-none item-sub mb-1">Qty</div>
+                <input type="number" class="qty-input" value="1" min="1" max="10">
+              </div>
+              <div class="col-4 col-md-2 text-md-end">
+                <div class="d-md-none item-sub mb-1">Total</div>
+                <span class="item-subtotal">₹380</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Summary -->
+      <div>
+        <div class="summary-card p-4">
+          <div class="summary-title mb-4">Order Summary</div>
+          <div class="summary-row"><span style="color:black">Sugarcane Juice ×1</span><span>₹360</span></div>
+          <div class="summary-row"><span style="color:black">Cold Pressed Orange ×1</span><span>₹420</span></div>
+          <div class="summary-row"><span style="color:black">Choclate Milkshake ×1</span><span>₹400</span></div>
+          <div class="summary-row"><span style="color:black">Strawberry Milkshake ×1</span><span>₹380</span></div>
+          <div class="summary-row"><span style="color:black">Subtotal (4 items)</span><span
+              style="font-weight:600">₹1560</span></div>
+          <div class="summary-row"><span style="color:black">Delivery</span><span class="summary-free">FREE</span></div>
+          <div class="summary-row"><span style="color:black">Discount</span><span class="summary-discount">−₹200</span>
+          </div>
+          <div class="summary-row total"><span>Total Payable</span><span>₹1360</span></div>
+          <div class="d-flex gap-3">
+            <a href="checkout.html" class="btn btn-dark btn-checkout flex-fill text-center">
+              Proceed to Checkout →
+            </a>
+            <a href="home.html" class="btn btn-outline-dark btn-continue flex-fill text-center">
+              Continue Shopping
+            </a>
+          </div>
+          <div class="text-center mt-3" style="font-size:11px;color:#6a7060">🔒 Secure checkout · SSL encrypted</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ FOOTER ══════════════════════ -->
+  <footer class="text-white pt-5 pb-0">
+    <!-- Footer Main -->
+    <div class="container pb-4">
+      <div class="row g-4">
+
+        <!-- Logo + Social -->
+        <div class="col-12 col-md-3 text-center text-md-start">
+          <img src="image/logo.png" alt="Fruit Fusion" class="img-fluid mb-3" style="max-width:170px; margin-left:-18px">
+          <p class="text-uppercase fw-semibold small mb-2">Follow Us:</p>
+          <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+            <a href="#" class="btn btn-primary btn-sm rounded-circle" aria-label="Facebook"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="btn btn-danger btn-sm rounded-circle" aria-label="Instagram"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="btn btn-success btn-sm rounded-circle" aria-label="WhatsApp"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Shop</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Energy
+                Drinks</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Fruit
+                Fusion</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Sauces</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Juices</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Mayos</a></li>
+          </ul>
+        </div>
+
+        <!-- Everyone's Favourite -->
+        <div class="col-6 col-sm-6 col-md-3">
+          <h6 class="text-uppercase fw-bold mb-3">Everyone's Favourite</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cheesy Sauce</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Baked Multigrain
+                Flatbread</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Peri Peri Dip</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Chipotle Dip</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Tomato Ketchup</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Support</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Shipping &amp;
+                Delivery</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cancellations
+                &amp; Returns</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Privacy Policy</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Terms &amp;
+                Conditions</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Contact Us</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">About Us</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Sitemap</a></li>
+          </ul>
+        </div>
+
+        <!-- Address -->
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Address</h6>
+          <p class="text-white-50 small">
+            No. 216-A, 2nd Floor, Enkay Tower, Wing-A,<br>
+            Udyog Vihar, Phase V, Gurugram-122016,<br>
+            Haryana, India.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Keyword Bar -->
+    <div class=" py-6">
+      <div class="container-fluid">
+        <p class=" small text-white text-center">
+          <strong class="text-white">Shop By Keyword:</strong>
+          Cold Pressed Oils | Baked Snacks | Green Tea |
+          Herbs &amp; Spices | Durum Wheat Pasta | Cake Mix | Snacks
+        </p>
+      </div>
+    </div>
+
+    <!-- Copyright Bar -->
+    <div class=" py-3" style=" background-color: #1d3e12;">
+      <div class="container d-flex align-items-center justify-content-center flex-wrap gap-2">
+        <a href="#top" class="btn btn-outline-light btn-sm rounded-circle me-2"
+          style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;"
+          aria-label="Scroll to top">
+          <i class="fas fa-chevron-up"></i>
+        </a>
+        <span class="text-white small">Copyright 2024 &copy; Fruit Fusion World. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fruit Fusion -  🥕 Healthy & Detox Juices</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ===== GLOBAL VARIABLES & RESETS ===== */
+        :root {
+            --green: #2d6a1f;
+            --green-light: #edf5e7;
+            --green-dark: #1d4814;
+            --green-mid: #4a8c35;
+            --red: #d94040;
+            --amber: #e8960d;
+            --text: #1a1a18;
+            --muted: #6a7060;
+            --border: #e0e0d4;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        /* ===== HEADER & LOGO ===== */
+        .header-container {
+            background: radial-gradient(circle, #ffb347 0%, #ffcc33 100%);
+        }
+
+        .header-logo {
+            height: 70px;
+            transition: height 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .header-logo {
+                height: 90px;
+            }
+        }
+
+        .search-box {
+            max-width: 600px;
+        }
+
+      /* ===== SIDEBAR (OFFCANVAS) ===== */
+        .offcanvas-header {
+            background: #ff8c00;
+            color: white;
+        }
+
+        .user-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            color: #333 !important;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: #f2f2f2;
+            padding-left: 30px;
+            border-left: 4px solid #ff8c00;
+        }
+
+        .nav-link.active {
+            background: #eaeaea;
+            font-weight: bold;
+            border-left: 4px solid #ff8c00;
+        }
+
+        .hover-video {
+            transition: opacity 0.4s ease-in-out;
+            background-color: #f8f9fa;
+            /* Prevents a flicker during reload */
+        }
+
+        .hover-video:hover {
+            opacity: 0.9;
+            /* Slight visual change to show it's active */
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-strip {
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-strip::before {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 280px;
+            height: 280px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-strip::after {
+            content: '';
+            position: absolute;
+            right: 80px;
+            bottom: -80px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            display: inline-block;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-right: 8px;
+            transition: all 0.2s;
+        }
+
+        .filter-chip.active {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* ===== PROMO BANNER ===== */
+        .promo-banner {
+            background: var(--green-light);
+            border: 1px solid #c8e0bc;
+            border-radius: 12px;
+        }
+
+        /* ===== PRODUCT CARD ===== */
+        .product-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            height: 100%;
+            transition: box-shadow .25s, transform .2s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .card-img-zone {
+            position: relative;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Bottle Art CSS */
+        .bottle-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.18));
+        }
+
+        .bottle-cap {
+            width: 26px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .bottle-neck {
+            width: 18px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .bottle-body {
+            width: 58px;
+            height: 110px;
+            border-radius: 8px 8px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bottle-body::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 8px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .bottle-brand {
+            font-size: 7px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 2px;
+        }
+
+        .bottle-name {
+            font-size: 8px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            line-height: 1.4;
+            padding: 0 6px;
+        }
+
+        .bottle-ml {
+            font-size: 7px;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 500;
+        }
+
+        /* Badges */
+        .badge-off {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--red);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 2;
+        }
+
+        .badge-pack {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--text);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 20px;
+            text-align: center;
+            line-height: 1.3;
+            z-index: 2;
+        }
+
+        .badge-bestseller {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--green);
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 14px 14px 16px;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            line-height: 1.35;
+        }
+
+        .price-old {
+            font-size: 12px;
+            color: var(--muted);
+            text-decoration: line-through;
+        }
+
+        .price-new {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .price-save {
+            font-size: 11px;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .star-full {
+            color: var(--amber);
+            font-size: 12px;
+        }
+
+        .star-empty {
+            color: #d8d8cc;
+            font-size: 12px;
+        }
+
+        .rev-txt {
+            font-size: 11px;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        /* Form & Buttons */
+        .pack-sel {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .pack-sel:focus {
+            border-color: var(--green);
+            outline: none;
+        }
+
+        .btn-add {
+            flex: 1;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 9px 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--green-dark);
+            color: #fff;
+        }
+
+        .btn-buy {
+            flex: 1;
+            background: transparent;
+            color: var(--green);
+            border: 1.5px solid var(--green);
+            border-radius: 9px;
+            padding: 9px 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-buy:hover {
+            background: var(--green);
+            color: #fff;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: #4a7a3a;
+        }
+
+        /* Social Buttons Hover */
+        .btn-primary:hover {
+            background-color: #0a58ca !important;
+            transform: scale(1.1);
+        }
+
+        .btn-danger:hover {
+            background-color: #b02a37 !important;
+            transform: scale(1.1);
+        }
+
+        .btn-success:hover {
+            background-color: #146c43 !important;
+            transform: scale(1.1);
+        }
+
+        /* Footer Links Hover */
+        footer a.text-white-50:hover {
+            color: #fff !important;
+            padding-left: 6px;
+            transition: all 0.2s ease;
+        }
+
+        /* Social Button Transition */
+        footer .btn {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Added WhatsApp color */
+
+        .footer-address {
+            color: #d4ecc8;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+
+        .keyword-bar {
+            background: #2e5e22;
+            padding: 12px 0;
+            font-size: 12px;
+            color: #c8e6b8;
+            text-align: center;
+            border-top: 1px solid #3a6a2a;
+            line-height: 1.6;
+        }
+
+        .keyword-bar b {
+            color: #fff;
+        }
+
+        .copyright-bar {
+            background: #2e5e22;
+            padding: 12px 0;
+            font-size: 12.5px;
+            color: #c8e6b8;
+            text-align: center;
+            border-top: 1px solid #3a6a2a;
+        }
+
+        .scroll-top {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #4a7a3a;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            margin-right: 12px;
+            transition: background 0.2s;
+        }
+
+        .scroll-top:hover {
+            background: #5c9649;
+            color: #fff;
+        }
+      /* ── NOTIFICATION OFFCANVAS ── */
+    #notifCanvas {
+      width: 380px;
+    }
+    #notifCanvas .offcanvas-header {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 18px 20px;
+    }
+    #notifCanvas .offcanvas-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .notif-mark-all {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .notif-mark-all:hover { color: #fff; }
+
+   
+    /* notification list */
+    .notif-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .notif-item:hover { background: var(--green-light); }
+    .notif-item.unread { background: #f0f8ec; }
+    .notif-item.unread:hover { background: #e2f5d8; }
+
+   
+
+    /* icon bubble */
+    .notif-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .icon-order   { background: #fff4d6; }
+    .icon-promo   { background: #fde8e8; }
+    .icon-delivery{ background: var(--green-light); }
+    .icon-wallet  { background: #e8f0fe; }
+    .icon-system  { background: #f3f3f3; }
+
+    .notif-title {
+      font-size: 13px; font-weight: 700; margin-bottom: 2px;
+    }
+    .notif-body {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .notif-time {
+      font-size: 10px; color: #b0b0a0;
+      margin-top: 5px; display: block;
+    }
+
+    :root {
+      --green-dark:  #2d6a1f;
+      --green-mid:   #4a8f34;
+      --green-light: #edf5e7;
+      --orange:      #ff8c00;
+      --bg:          #f5f4ee;
+      --border:      #e0e0d4;
+      --muted:       #6a7060;
+      --text:        #1a1a18;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- HEADER -->
+  <header class="header-container py-2 shadow-sm">
+        <div class="container">
+
+            <!-- Top Row -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+                <!-- Menu Button -->
+                <button class="btn border-0 p-0">
+                    <i class="fas fa-bars fs-4"></i>
+                </button>
+
+                <!-- Logo (center on mobile) -->
+                <a href="index.html" class="mx-auto mx-md-0">
+                    <img src="image/image.png" class="img-fluid" style="max-height: 95px;" alt="Fruit Fusion">
+                </a>
+
+                <!-- Icons -->
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Cart -->
+                    <div class="position-relative">
+                        <a href="cart.html" class="text-dark">
+                            <i class="fa fa-shopping-cart fs-4"></i>
+                        </a>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: 0.6rem;">
+                            2
+                        </span>
+                    </div>
+
+                    <!-- Bell -->
+                    <div class="position-relative" style="margin-right:3px;">
+                        <i class="fas fa-bell fs-4 text-dark" role="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#notifCanvas" style="cursor: pointer;">
+                        </i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            style="font-size: .6rem;">
+                            3
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="mt-3">
+                <div class="input-group shadow-sm mx-auto" style="max-width: 600px;">
+                    <input type="text" class="form-control border-0" placeholder="Search for frames, lenses...">
+                    <button class="btn btn-dark px-3 px-md-4">Search</button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+   <!-- ══════════════════════════════════════
+       NOTIFICATION OFFCANVAS (RIGHT SIDE)
+  ══════════════════════════════════════ -->
+  <div class="offcanvas offcanvas-end d-flex flex-column" id="notifCanvas" tabindex="-1">
+
+    <!-- Header -->
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">
+        <i class="fas fa-bell me-2"></i> Notifications
+        <span class="badge rounded-pill ms-2" style="background:rgba(255,255,255,.2);font-size:11px;">3 New</span>
+      </h5>
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="notif-mark-all">Mark all read</a>
+        <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+    </div>
+    <!-- Notification List -->
+    <div class="notif-list">
+
+      <!-- UNREAD: Order -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-order">🛍️</div>
+        <div>
+          <div class="notif-title">Order Confirmed!</div>
+          <div class="notif-body">Your order #FF20483 for Cold Pressed Juice Pack has been confirmed and is being prepared.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>2 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Delivery -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-delivery">🚚</div>
+        <div>
+          <div class="notif-title">Out for Delivery</div>
+          <div class="notif-body">Your order #FF20479 is on the way! Expected delivery in 25–35 minutes.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>18 minutes ago</span>
+        </div>
+      </a>
+
+      <!-- UNREAD: Promo -->
+      <a href="#" class="notif-item unread">
+        <div class="unread-dot mt-1"></div>
+        <div class="notif-icon icon-promo">🎁</div>
+        <div>
+          <div class="notif-title">Weekend Special 🎉</div>
+          <div class="notif-body">Get 20% OFF on all Detox Juices this weekend only. Use code <strong>DETOX20</strong>.</div>
+          <span class="notif-time"><i class="fas fa-clock me-1"></i>1 hour ago</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+  <!-- ══════════════════════ SIDEBAR OFFCANVAS ══════════════════════ -->
+  <div class="offcanvas offcanvas-start w-75" style="max-width: 260px;" id="sidebar" tabindex="-1"
+        aria-labelledby="sidebarLabel">
+
+        <div class="offcanvas-header text-white" style="background-color: ffc23b;">
+            <div class="d-flex align-items-center gap-3">
+                <div class="position-relative fs-5">
+                    <i class="fa-solid fa-user" role="button"></i>
+                </div>
+                <h5 class="mb-0" id="sidebarLabel">Himanshu </h5>
+            </div>
+            <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body p-0 d-flex flex-column">
+
+            <ul class="nav flex-column mt-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-store me-3"></i>Super Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="checkout.html"><i class="fas fa-list me-3"></i>My Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="checkout.html"><i class="fas fa-wallet me-3"></i>Payment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="order.html"><i class="fas fa-truck me-3"></i>Shipping</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Referral.html"><i class="fas fa-gift me-3"></i>Referral</a>
+                </li>
+            </ul>
+
+            <div class="mt-auto p-4 border-top">
+                <a href="Login.html" class="text-danger fw-bold text-decoration-none fs-5">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <section class="hero-strip py-5">
+        <div class="container py-2">
+            <h1 class="hero-h1 mb-2">Cold Pressed<br />Juices</h1>
+            <p class="mb-4" style="font-size:14px; opacity:.9; font-weight:400; max-width: 400px;">
+                Fresh, raw &amp; never pasteurised — straight from nature to your door.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="hero-tag">🌿 100% Natural</span>
+                <span class="hero-tag">🧊 Cold Pressed</span>
+                <span class="hero-tag">🚚 Free Delivery</span>
+                <span class="hero-tag">♻️ Eco Packaged</span>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="filter-bar py-3 shadow-sm">
+        <div class="container">
+            <a href="#" class="filter-chip active">All Fresh Juices</a>
+            <a href="#" class="filter-chip">🍊 Citrus Juices</a>
+            <a href="#" class="filter-chip">🍎 Fruit Juices</a>
+            <a href="#" class="filter-chip">🥕 Healthy & Detox Juices</a>
+            <a href="#" class="filter-chip">🥭 Tropical Juices</a>
+
+        </div>
+    </div>
+
+
+    <section class="py-4 py-lg-5">
+        <div class="container-fluid">
+
+            <!-- Promo Banner -->
+            <div class="promo-banner d-flex flex-wrap align-items-center gap-3 p-3 mb-4 shadow-sm">
+                <span style="font-size:28px">🎁</span>
+                <div>
+                    <strong style="font-size:14px;color:var(--green-dark);display:block">Buy 2 Packs, Get ₹100
+                        Off</strong>
+                    <span style="font-size:13px;color:var(--muted)">Use code Fruit Fussion at checkout. Valid on all
+                        packs.</span>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="row g-3 g-lg-4">
+
+               
+             
+                <!-- Card 13: Amla Detox -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <div class="card-img-zone" style="background:linear-gradient(160deg,#d4e87a,#9bbc20)">
+                            <img src="image/image13.png" alt="Juice Image"
+                                style="max-width:100%; max-height:100%; object-fit:contain;">
+                            <span class="badge-off">20% OFF</span>
+                            <span class="badge-pack">PACK OF<br />6</span>
+
+                        </div>
+                        <div class="card-content">
+                            <div class="product-name text-truncate">Carrot Juice</div>
+                            <div class="d-flex align-items-baseline flex-wrap gap-1 mb-2">
+                                <span class="price-old">₹450</span><span class="price-new">₹360</span><span
+                                    class="price-save">Save
+                                    ₹90</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-empty">★</span>
+                                <span class="rev-txt">7 reviews</span>
+                            </div>
+                            <select class="pack-sel">
+                                <option>Pack of 6 — ₹360</option>
+                                <option>Pack of 12 — ₹690</option>
+                            </select>
+                            <div class="d-flex gap-2">
+                                <a href="cart.html" class="btn-add"><i class="fa fa-shopping-cart"></i> Add</a>
+                                <a href="checkout.html" class="btn-buy">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 14: Amla Detox -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <div class="card-img-zone" style="background:linear-gradient(160deg,#d4e87a,#9bbc20)">
+                            <img src="image/image14.png" alt="Juice Image"
+                                style="max-width:100%; max-height:100%; object-fit:contain;">
+                            <span class="badge-off">20% OFF</span>
+                            <span class="badge-pack">PACK OF<br />6</span>
+
+                        </div>
+                        <div class="card-content">
+                            <div class="product-name text-truncate">Beetroot Juice</div>
+                            <div class="d-flex align-items-baseline flex-wrap gap-1 mb-2">
+                                <span class="price-old">₹450</span><span class="price-new">₹360</span><span
+                                    class="price-save">Save
+                                    ₹90</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-empty">★</span>
+                                <span class="rev-txt">7 reviews</span>
+                            </div>
+                            <select class="pack-sel">
+                                <option>Pack of 6 — ₹360</option>
+                                <option>Pack of 12 — ₹690</option>
+                            </select>
+                            <div class="d-flex gap-2">
+                                <a href="cart.html" class="btn-add"><i class="fa fa-shopping-cart"></i> Add</a>
+                                <a href="checkout.html" class="btn-buy">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 16: Amla Detox -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <div class="card-img-zone" style="background:linear-gradient(160deg,#d4e87a,#9bbc20)">
+                            <img src="image/image18.png" alt="Juice Image"
+                                style="max-width:100%; max-height:100%; object-fit:contain;">
+                            <span class="badge-off">20% OFF</span>
+                            <span class="badge-pack">PACK OF<br />6</span>
+
+                        </div>
+                        <div class="card-content">
+                            <div class="product-name text-truncate">Amla Juice</div>
+                            <div class="d-flex align-items-baseline flex-wrap gap-1 mb-2">
+                                <span class="price-old">₹450</span><span class="price-new">₹360</span><span
+                                    class="price-save">Save
+                                    ₹90</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-empty">★</span>
+                                <span class="rev-txt">7 reviews</span>
+                            </div>
+                            <select class="pack-sel">
+                                <option>Pack of 6 — ₹360</option>
+                                <option>Pack of 12 — ₹690</option>
+                            </select>
+                            <div class="d-flex gap-2">
+                                <a href="cart.html" class="btn-add"><i class="fa fa-shopping-cart"></i> Add</a>
+                                <a href="checkout.html" class="btn-buy">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 17: Amla Detox -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <div class="card-img-zone" style="background:linear-gradient(160deg,#d4e87a,#9bbc20)">
+                            <img src="image/image19.png" alt="Juice Image"
+                                style="max-width:100%; max-height:100%; object-fit:contain;">
+                            <span class="badge-off">20% OFF</span>
+                            <span class="badge-pack">PACK OF<br />6</span>
+
+                        </div>
+                        <div class="card-content">
+                            <div class="product-name text-truncate">Green Detox Juice</div>
+                            <div class="d-flex align-items-baseline flex-wrap gap-1 mb-2">
+                                <span class="price-old">₹450</span><span class="price-new">₹360</span><span
+                                    class="price-save">Save
+                                    ₹90</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-full">★</span><span class="star-full">★</span><span
+                                    class="star-empty">★</span>
+                                <span class="rev-txt">7 reviews</span>
+                            </div>
+                            <select class="pack-sel">
+                                <option>Pack of 6 — ₹360</option>
+                                <option>Pack of 12 — ₹690</option>
+                            </select>
+                            <div class="d-flex gap-2">
+                                <a href="cart.html" class="btn-add"><i class="fa fa-shopping-cart"></i> Add</a>
+                                <a href="checkout.html" class="btn-buy">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════ FOOTER ══════════════════════ -->
+    <footer class="text-white pt-5 pb-0">
+        <!-- Footer Main -->
+        <div class="container pb-4">
+            <div class="row g-4">
+
+                <!-- Logo + Social -->
+                <div class="col-12 col-md-3 text-center text-md-start">
+                    <img src="image/logo.png" alt="Fruit Fusion" class="img-fluid mb-3" style="max-width:170px; margin-left:-18px">
+                    <p class="text-uppercase fw-semibold small mb-2">Follow Us:</p>
+                    <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+                        <a href="#" class="btn btn-primary btn-sm rounded-circle" aria-label="Facebook"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm rounded-circle" aria-label="Instagram"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="btn btn-success btn-sm rounded-circle" aria-label="WhatsApp"
+                            style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Shop</a></li>
+                        <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Energy
+                                Drinks</a></li>
+                        <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Fruit
+                                Fusion</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Sauces</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Juices</a></li>
+                        <li class="mb-1"><a href="shopping.html"
+                                class="text-white-50 text-decoration-none small">Mayos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Everyone's Favourite -->
+                <div class="col-6 col-sm-6 col-md-3">
+                    <h6 class="text-uppercase fw-bold mb-3">Everyone's Favourite</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cheesy Sauce</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Baked Multigrain
+                                Flatbread</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Peri Peri Dip</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Chipotle Dip</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Tomato Ketchup</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Support</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Shipping &amp;
+                                Delivery</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cancellations
+                                &amp; Returns</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Privacy Policy</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Terms &amp;
+                                Conditions</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Contact Us</a>
+                        </li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">About Us</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <!-- Address -->
+                <div class="col-6 col-sm-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Address</h6>
+                    <p class="text-white-50 small">
+                        No. 216-A, 2nd Floor, Enkay Tower, Wing-A,<br>
+                        Udyog Vihar, Phase V, Gurugram-122016,<br>
+                        Haryana, India.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Keyword Bar -->
+        <div class=" py-6">
+            <div class="container-fluid">
+                <p class=" small text-white text-center">
+                    <strong class="text-white">Shop By Keyword:</strong>
+                    Cold Pressed Oils | Baked Snacks | Green Tea |
+                    Herbs &amp; Spices | Durum Wheat Pasta | Cake Mix | Snacks
+                </p>
+            </div>
+        </div>
+
+        <!-- Copyright Bar -->
+        <div class=" py-3" style=" background-color: #1d3e12;">
+            <div class="container d-flex align-items-center justify-content-center flex-wrap gap-2">
+                <a href="#top" class="btn btn-outline-light btn-sm rounded-circle me-2"
+                    style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;"
+                    aria-label="Scroll to top">
+                    <i class="fas fa-chevron-up"></i>
+                </a>
+                <span class="text-white small">Copyright 2024 &copy; Fruit Fusion World. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

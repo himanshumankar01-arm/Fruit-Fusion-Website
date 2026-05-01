@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fruit Fusion - Login</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --green-dark: #2d6a1f;
+      --green-mid: #4a8f34;
+      --green-light: #edf5e7;
+      --orange: #ff8c00;
+      --bg: #f5f4ee;
+      --border: #e0e0d4;
+      --muted: #6a7060;
+      --text: #1a1a18;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header-container {
+      background: radial-gradient(circle, #ffb347 0%, #ffcc33 100%);
+      z-index: 1040;
+    }
+
+    .header-logo {
+      height: 80px;
+    }
+
+    .search-box {
+      max-width: 600px;
+    }
+
+    /* ===== SIDEBAR (OFFCANVAS) ===== */
+    .offcanvas-header {
+      background: #ff8c00;
+      color: white;
+    }
+
+    .user-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-link {
+      font-size: 16px;
+      color: #333 !important;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .nav-link:hover {
+      background: #f2f2f2;
+      padding-left: 30px;
+      border-left: 4px solid #ff8c00;
+    }
+
+    .nav-link.active {
+      background: #eaeaea;
+      font-weight: bold;
+      border-left: 4px solid #ff8c00;
+    }
+
+    .hover-video {
+      transition: opacity 0.4s ease-in-out;
+      background-color: #f8f9fa;
+      /* Prevents a flicker during reload */
+    }
+
+    .hover-video:hover {
+      opacity: 0.9;
+      /* Slight visual change to show it's active */
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .step.active {
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--border);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step.active .step-num {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .step-arrow {
+      color: var(--border);
+      font-size: 14px;
+      margin: 0 4px;
+    }
+
+    /* ── LOGIN SECTION ── */
+    .login-section {
+      padding: 48px 0 0;
+    }
+
+    /* ── LOGIN CARD ── */
+    .login-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 32px rgba(45, 106, 31, .08);
+      animation: fadeUp .4s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .form-label-custom {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color .15s, background .15s;
+    }
+
+    .form-input:focus {
+      border-color: var(--green-dark);
+      outline: none;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(45, 106, 31, .08);
+    }
+
+    .form-input::placeholder {
+      color: #b0b0a0;
+    }
+
+    /* ── PASSWORD TOGGLE (CSS-only) ── */
+    #pw-toggle {
+      display: none;
+    }
+
+    .pw-wrapper {
+      position: relative;
+    }
+
+    .pw-pass {
+      display: block;
+    }
+
+    .pw-text {
+      display: none;
+    }
+
+    #pw-toggle:checked~.pw-wrapper .pw-pass {
+      display: none;
+    }
+
+    #pw-toggle:checked~.pw-wrapper .pw-text {
+      display: block;
+    }
+
+    .pw-eye-label {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pw-eye-label:hover {
+      color: var(--green-dark);
+    }
+
+    .pw-eye-label .fa-eye-slash {
+      display: none;
+    }
+
+    #pw-toggle:checked~.pw-wrapper .pw-eye-label .fa-eye {
+      display: none;
+    }
+
+    #pw-toggle:checked~.pw-wrapper .pw-eye-label .fa-eye-slash {
+      display: inline;
+    }
+
+    /* ── REMEMBER / FORGOT ── */
+    .form-check-input:checked {
+      background-color: var(--green-dark);
+      border-color: var(--green-dark);
+    }
+
+    .forgot-link {
+      font-size: 13px;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ── PRIMARY BUTTON ── */
+    .btn-login {
+      display: block;
+      width: 100%;
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+      cursor: pointer;
+      transition: all .18s;
+      text-decoration: none;
+    }
+
+    .btn-login:hover {
+      background: #1d4814;
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(45, 106, 31, .3);
+    }
+
+    /* ── DIVIDER ── */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      font-size: 12px;
+      color: #b0b0a0;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── SOCIAL BUTTONS ── */
+    .btn-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all .15s;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+
+    .btn-social:hover {
+      border-color: var(--green-dark);
+      background: var(--green-light);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    /* ── SIGNUP NOTE ── */
+    .signup-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 18px;
+    }
+
+    .signup-note a {
+      color: var(--green-dark);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .signup-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── TRUST BADGES ── */
+    .trust-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .trust-item {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+      border: 1px solid var(--border);
+    }
+
+    /* ── PROMO PANEL ── */
+    .promo-panel {
+      background: radial-gradient(135deg, #2d6a1f 0%, #4a8f34 60%, #78c04e 100%);
+      border-radius: 20px;
+      padding: 44px 36px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 540px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-panel::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.20);
+      top: -80px;
+      right: -80px;
+    }
+
+    .promo-panel::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.20);
+      bottom: -60px;
+      left: -40px;
+    }
+
+    .promo-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, .15);
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    .promo-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .promo-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .8);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .promo-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .promo-feature-dot {
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 255, 255, .15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .promo-discount {
+      margin-top: 28px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .promo-discount-icon {
+      font-size: 32px;
+    }
+
+    .promo-discount-text {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .85);
+    }
+
+    .promo-discount-text strong {
+      display: block;
+      font-size: 18px;
+      font-family: 'Cormorant Garamond', serif;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background-color: #4a7a3a;
+    }
+
+    footer a.text-white-50:hover {
+      color: #fff !important;
+      padding-left: 6px;
+      transition: all .2s ease;
+    }
+
+    footer .btn {
+      transition: transform .2s ease, background-color .2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0a58ca !important;
+      transform: scale(1.1);
+    }
+
+    .btn-danger:hover {
+      background-color: #b02a37 !important;
+      transform: scale(1.1);
+    }
+
+    .btn-success:hover {
+      background-color: #146c43 !important;
+      transform: scale(1.1);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:991px) {
+      .promo-panel {
+        display: none !important;
+      }
+
+      .login-section {
+        padding: 32px 0 0;
+      }
+    }
+
+    @media (max-width:575px) {
+      .login-card {
+        padding: 28px 20px;
+      }
+
+      .card-heading {
+        font-size: 24px;
+      }
+
+      .trust-row {
+        flex-wrap: wrap;
+      }
+
+      .trust-item {
+        flex: 1 1 40%;
+      }
+    }
+
+    .pw-text {
+      display: none;
+    }
+
+    /* Toggle logic */
+    #pw-toggle:checked~div .pw-pass {
+      display: none;
+    }
+
+    #pw-toggle:checked~div .pw-text {
+      display: block;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- ══════════════════ HEADER ══════════════════ -->
+ <header class="header-container py-3 shadow-sm sticky-top">
+  <div class="container-fluid">
+    
+    <div class="d-flex justify-content-center align-items-center">
+      <!-- Logo -->
+      <a href="index.html">
+        <img src="image/image.png" class="header-logo" alt="Fruit Fusion" style="height: 120px;">
+      </a>
+    </div>
+
+  </div>
+</header>
+  <!-- ══════════════════ LOGIN SECTION ══════════════════ -->
+  <section class="login-section bg-black">
+    <div class="container pb-5">
+      <div class="row align-items-center g-4 justify-content-center">
+
+        <!-- LEFT: Promo Panel -->
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="promo-panel">
+            <div class="promo-tag">🍊 Fresh Every Day</div>
+            <div class="promo-title">Your Daily Dose of Nature's Best</div>
+            <p class="promo-sub">Join thousands of health enthusiasts who trust Fruit Fusion for cold-pressed juices,
+              energising drinks &amp; natural goodness delivered fresh.</p>
+            <div class="promo-feature">
+              <div class="promo-feature-dot">🚚</div> Free delivery on orders above ₹499
+            </div>
+            <div class="promo-feature">
+              <div class="promo-feature-dot">🌿</div> 100% natural, no preservatives
+            </div>
+            <div class="promo-feature">
+              <div class="promo-feature-dot">⚡</div> Express delivery in 2–4 hours
+            </div>
+            <div class="promo-feature">
+              <div class="promo-feature-dot">🔄</div> Easy returns &amp; refunds
+            </div>
+            <div class="promo-discount">
+              <div class="promo-discount-icon">🎁</div>
+              <div class="promo-discount-text">
+                <strong>₹100 OFF</strong>
+                on your first order. Use code <b>FRESH100</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Login Card -->
+        <div class="col-lg-5 col-md-8 col-12">
+          <div class="login-card p-4 shadow rounded bg-white">
+
+            <h1 class="mb-1">Login</h1>
+            <p class="text-muted mb-4" style="font-size:13px;">
+              If you have an account with us, please log in.
+            </p>
+
+            <!-- FORM -->
+            <form action="home.html">
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+              </div>
+
+              <!-- Password (CSS Toggle Only) -->
+              <div class="mb-3">
+                <label for="pw-pass" class="form-label">Password</label>
+
+                <!-- Toggle checkbox -->
+                <input type="checkbox" id="pw-toggle" hidden>
+
+                <div class="position-relative">
+
+                  <!-- Password -->
+                  <input type="password" class="form-control pw-pass" id="pw-pass" placeholder="••••••••" required>
+
+                  <!-- Text -->
+                  <input type="text" class="form-control pw-text position-absolute top-0 start-0"
+                    placeholder="••••••••">
+
+                  <!-- Eye icon -->
+                  <label for="pw-toggle" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                    style="cursor:pointer;">
+                    <i class="fas fa-eye"></i>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Remember + Forgot -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="rememberMe">
+                  <label class="form-check-label" for="rememberMe">
+                    Remember me
+                  </label>
+                </div>
+                <a href="#" class="text-decoration-none" style="color: black;">Forgot password?</a>
+              </div>
+
+              <!-- Submit -->
+              <a href="home.html"><button type="submit" class="btn btn-dark w-100">
+                  Sign In
+                </button>
+              </a>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="text-center my-3 text-muted">or continue with</div>
+
+            <!-- Social -->
+            <a href="https://www.google.com/?zx=1777427147949" class="btn btn-outline-secondary w-100 mb-2">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+              Continue with Google
+            </a>
+
+            <a href="https://www.facebook.com/" class="btn btn-outline-secondary w-100 mb-2">
+              <i class="fab fa-facebook-f text-primary"></i>
+              Continue with Facebook
+            </a>
+
+            <!-- Signup -->
+            <p class="text-center mt-3 text-decoration-none" style="font-size:13px;">
+              Don't have an account?
+              <a href="sign_up.html" style="color: black;">Create an account →</a>
+            </p>
+
+            <!-- Trust -->
+            <div class="row g-2 text-center small text-muted border-top pt-4">
+              <div class="col-4 border-end">🔒<br>Secure</div>
+              <div class="col-4 border-end">🛡️<br>Privacy</div>
+              <div class="col-4">✅<br>Verified</div>
+            </div>
+
+          </div>
+        </div>
+  </section>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer class="text-white pt-5 pb-0">
+    <div class="container pb-4">
+      <div class="row g-4">
+
+        <div class="col-12 col-md-3 text-center text-md-start">
+          <img src="image/logo.png" alt="Fruit Fusion" class="img-fluid mb-3" style="max-width:170px; margin-left:-18px">
+          <p class="text-uppercase fw-semibold small mb-2">Follow Us:</p>
+          <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+            <a href="#" class="btn btn-primary btn-sm rounded-circle"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;"
+              aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="btn btn-danger btn-sm rounded-circle"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;"
+              aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="btn btn-success btn-sm rounded-circle"
+              style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;"
+              aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Shop</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Energy Drinks</a>
+            </li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Fruit Fusion</a>
+            </li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Sauces</a></li>
+            <li class="mb-1"><a href="shopping.html" class="text-white-50 text-decoration-none small">Juices</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-sm-6 col-md-3">
+          <h6 class="text-uppercase fw-bold mb-3">Everyone's Favourite</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Cheesy Sauce</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Baked Multigrain Flatbread</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Peri Peri Dip</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Tomato Ketchup</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Support</h6>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Shipping &amp; Delivery</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Privacy Policy</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Terms &amp; Conditions</a>
+            </li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">Contact Us</a></li>
+            <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none small">About Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-sm-6 col-md-2">
+          <h6 class="text-uppercase fw-bold mb-3">Address</h6>
+          <p class="text-white-50 small">
+            No. 216-A, 2nd Floor, Enkay Tower, Wing-A,<br>
+            Udyog Vihar, Phase V, Gurugram-122016,<br>
+            Haryana, India.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="py-3 border-top border-secondary">
+      <div class="container-fluid">
+        <p class="small text-white text-center mb-0">
+          <strong>Shop By Keyword:</strong>
+          Cold Pressed Oils | Baked Snacks | Green Tea | Herbs &amp; Spices | Durum Wheat Pasta | Cake Mix | Snacks
+        </p>
+      </div>
+    </div>
+
+    <div class="py-3" style="background-color:#1d3e12;">
+      <div class="container d-flex align-items-center justify-content-center flex-wrap gap-2">
+        <a href="#top" class="btn btn-outline-light btn-sm rounded-circle me-2"
+          style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;"
+          aria-label="Back to top">
+          <i class="fas fa-chevron-up"></i>
+        </a>
+        <span class="text-white small">Copyright 2024 &copy; Fruit Fusion World. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS (required only for offcanvas sidebar) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
